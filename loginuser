@@ -1,0 +1,2 @@
+$ curl -fsS -b /tmp/tmp.Daqw8NVhQw -c /tmp/tmp.Daqw8NVhQw -H X-CSRFToken:\ Qv7JfHxoNcagr2tU3OsvnWBcfLdduDEe -H Content-Type:\ application/json -d \{\"userName\":\"root\"\,\"password\":\"Local-demo-only-583\!\"\} http://127.0.0.1:8000/djangoapp/login
+{"status": "Authenticated", "userName": "root"}
