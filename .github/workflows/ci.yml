@@ -1,0 +1,51 @@
+name: Dealership checks
+on: [push, pull_request, workflow_dispatch]
+permissions:
+  contents: read
+jobs:
+  django:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: server
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install Django dependencies
+        run: pip install -r requirements.txt
+      - name: Check Django configuration
+        run: python manage.py check
+      - name: Apply database migrations
+        run: python manage.py migrate --noinput
+  frontend:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: server/frontend
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install React dependencies
+        run: npm install --no-audit --no-fund
+      - name: Build React frontend
+        run: npm run build
+        env:
+          CI: 'false'
+  dealership-api:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: server/database
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install Node.js API dependencies
+        run: npm install --no-audit --no-fund
+      - name: Check API syntax
+        run: node --check app.js
